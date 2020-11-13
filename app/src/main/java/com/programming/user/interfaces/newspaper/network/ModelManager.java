@@ -16,6 +16,9 @@ public class ModelManager {
     protected static final String ARTICLES_IMAGE_METHOD = "article/image";
     protected static final String IMAGE_METHOD = "image/";
 
+    public static final String GROUP_ID = "DEV_TEAM_03";
+    public static final String GROUP_PSWD = "3553";
+
     public static boolean isConnected() {
         return restConnection.idUser != null;
     }
