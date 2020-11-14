@@ -21,10 +21,10 @@ public class RESTConnection {
     public static final String ATTR_LOGIN_PASS = "password";
     public static final String ATTR_SERVICE_URL = "service_url";
     public static final String ATTR_REQUIRE_SELF_CERT = "require_self_signed_cert";
-    public static final String ATTR_PROXY_HOST = "";
-    public static final String ATTR_PROXY_PORT = "";
-    public static final String ATTR_PROXY_USER = "";
-    public static final String ATTR_PROXY_PASS = "";
+    public static final String ATTR_PROXY_HOST = "proxy_host";
+    public static final String ATTR_PROXY_PORT = "proxy_port";
+    public static final String ATTR_PROXY_USER = "proxy_user";
+    public static final String ATTR_PROXY_PASS = "proxy_pass";
     public static final String ATTR_APACHE_AUTH_USER = "";
     public static final String ATTR_APACHE_AUTH_PASS = "";
 
@@ -46,8 +46,6 @@ public class RESTConnection {
 
             System.setProperty("http.proxyHost", proxyHost);
             System.setProperty("http.proxyPort", proxyPort);
-            System.setProperty("https.proxyHost", proxyHost);
-            System.setProperty("https.proxyPort", proxyPort);
         }
 
         if (ini.contains(ATTR_PROXY_USER) && ini.contains(ATTR_PROXY_PASS))	{
@@ -56,8 +54,6 @@ public class RESTConnection {
 
             System.setProperty("http.proxyUser", proxyUser);
             System.setProperty("http.proxyPassword", proxyPassword);
-            System.setProperty("https.proxyUser", proxyUser);
-            System.setProperty("https.proxyPassword", proxyPassword);
 
             Authenticator.setDefault(
                     new Authenticator() {
