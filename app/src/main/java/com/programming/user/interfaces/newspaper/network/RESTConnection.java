@@ -21,10 +21,10 @@ public class RESTConnection {
     public static final String ATTR_LOGIN_PASS = "password";
     public static final String ATTR_SERVICE_URL = "service_url";
     public static final String ATTR_REQUIRE_SELF_CERT = "require_self_signed_cert";
-    public static final String ATTR_PROXY_HOST = "proxy_host";
-    public static final String ATTR_PROXY_PORT = "proxy_port";
-    public static final String ATTR_PROXY_USER = "proxy_user";
-    public static final String ATTR_PROXY_PASS = "proxy_pass";
+    public static final String ATTR_PROXY_HOST = "";
+    public static final String ATTR_PROXY_PORT = "";
+    public static final String ATTR_PROXY_USER = "";
+    public static final String ATTR_PROXY_PASS = "";
     public static final String ATTR_APACHE_AUTH_USER = "";
     public static final String ATTR_APACHE_AUTH_PASS = "";
 

@@ -32,28 +32,6 @@ public class ArticleListActivity extends AppCompatActivity {
 
     private void initialize() {
         lvArticles = findViewById(R.id.listArticles);
-        initializeProperties();
-    }
-
-    private void initializeProperties() {
-        Properties restProperties = new Properties();
-        restProperties.setProperty(RESTConnection.ATTR_SERVICE_URL, BuildConfig.SERVER_URL);
-        restProperties.setProperty(RESTConnection.ATTR_REQUIRE_SELF_CERT, "TRUE");
-//        restProperties.setProperty(RESTConnection.ATTR_PROXY_HOST, "");
-//        restProperties.setProperty(RESTConnection.ATTR_PROXY_PORT, "");
-//        restProperties.setProperty(RESTConnection.ATTR_PROXY_USER, BuildConfig.GROUP_ID);
-//        restProperties.setProperty(RESTConnection.ATTR_PROXY_PASS, BuildConfig.GROUP_PSWD);
-
-        configureConnection(restProperties);
-    }
-
-    private void configureConnection(Properties restProperties) {
-        try {
-            ModelManager.configureConnection(restProperties);
-            downloadArticles();
-        } catch (AuthenticationError authenticationError) {
-            authenticationError.printStackTrace();
-        }
     }
 
     private void downloadArticles() {
