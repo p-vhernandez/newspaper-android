@@ -1,60 +1,79 @@
 package com.programming.user.interfaces.newspaper.utils.adapters;
 
-import android.database.DataSetObserver;
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
 
-public class ArticlesAdapder implements Adapter {
+import com.programming.user.interfaces.newspaper.R;
+import com.programming.user.interfaces.newspaper.model.Article;
 
-    @Override
-    public void registerDataSetObserver(DataSetObserver dataSetObserver) {
+import java.util.ArrayList;
 
+public class ArticlesAdapder extends BaseAdapter {
+
+    private Context context;
+    private ArrayList<Article> allArticles;
+
+    public ArticlesAdapder(Context context, ArrayList<Article> allArticles) {
+        this.context = context;
+        this.allArticles = allArticles;
     }
 
-    @Override
-    public void unregisterDataSetObserver(DataSetObserver dataSetObserver) {
+    public ArticlesAdapder(Context context) {
+        this.context = context;
+    }
 
+    public void setAllArticles(ArrayList<Article> allArticles) {
+        this.allArticles = allArticles;
     }
 
     @Override
     public int getCount() {
-        return 0;
+        return allArticles.size();
     }
 
     @Override
     public Object getItem(int i) {
-        return null;
+        return allArticles.get(i);
     }
 
     @Override
     public long getItemId(int i) {
-        return 0;
+        return allArticles.get(i).getId();
     }
 
     @Override
-    public boolean hasStableIds() {
-        return false;
-    }
+    public View getView(int position, View convertView, ViewGroup parent) {
+        LayoutInflater inflater = (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        @SuppressLint("ViewHolder") View row = inflater.inflate(R.layout.custom_article_item, parent, false);
 
-    @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
-        return null;
-    }
+        try {
+            Article article = allArticles.get(position);
+            TextView articleTitle = row.findViewById(R.id.article_title);
+            TextView articleAbstract = row.findViewById(R.id.article_abstract);
+            TextView articleCategory = row.findViewById(R.id.article_category);
+            ImageView articleImage = row.findViewById(R.id.article_image);
 
-    @Override
-    public int getItemViewType(int i) {
-        return 0;
-    }
+            articleTitle.setText(article.getTitle());
+            articleAbstract.setText(article.getaAbstract());
+            articleCategory.setText(article.getCategory());
 
-    @Override
-    public int getViewTypeCount() {
-        return 0;
-    }
+            byte[] decodeString = Base64.decode(article.getImage().getImage(), Base64.DEFAULT);
+            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodeString, 0, decodeString.length);
+            articleImage.setImageBitmap(decodedByte);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-    @Override
-    public boolean isEmpty() {
-        return false;
+        return row;
     }
 
 }

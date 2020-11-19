@@ -1,5 +1,7 @@
 package com.programming.user.interfaces.newspaper.network;
 
+import android.util.Log;
+
 import com.programming.user.interfaces.newspaper.model.Article;
 import com.programming.user.interfaces.newspaper.network.exceptions.ServerCommunicationError;
 import com.programming.user.interfaces.newspaper.utils.Logger;
@@ -11,6 +13,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static com.programming.user.interfaces.newspaper.utils.ServiceCallUtils.parseHttpStreamResult;
 
@@ -50,7 +53,10 @@ public class ArticlesREST {
                 List<JSONObject> objects = ServiceCallUtils.readRestResultFromList(res);
 
                 for (JSONObject jsonObject : objects) {
-                    result.add(new Article(jsonObject));
+                    if (jsonObject.get("thumbnail_image") != null
+                            || !Objects.requireNonNull(jsonObject.get("thumbnail_image")).equals("")) {
+                        result.add(new Article(jsonObject));
+                    }
                 }
 
                 Logger.log(Logger.INFO, objects.size() + " objects (Article) retrieved");

@@ -10,7 +10,7 @@ import java.util.Date;
 import java.util.Hashtable;
 import java.util.Objects;
 
-public class Article extends ModelEntity {
+public class Article extends ModelEntity implements Comparable<Article> {
 
     private String title;
     private String subtitle;
@@ -205,5 +205,11 @@ public class Article extends ModelEntity {
         }
 
         return res;
+    }
+
+
+    @Override
+    public int compareTo(Article article) {
+        return this.getLastUpdate().compareTo(article.getLastUpdate());
     }
 }
