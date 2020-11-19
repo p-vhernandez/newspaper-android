@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId "com.programming.user.interfaces.newspaper"
-        minSdkVersion 16
+        minSdkVersion 24
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -20,17 +20,6 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
-    }
-
-    productFlavors {
-        debug {
-            dimension 'env'
-            SERVER_URL 'https://sanger.dia.fi.upm.es/pmd-task/'
-        }
-        release {
-            dimension 'env'
-            SERVER_URL 'https://sanger.dia.fi.upm.es/pmd-task/'
         }
     }
 
@@ -48,4 +37,7 @@ dependencies {
     testImplementation 'junit:junit:4.13.1'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+
+    implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1'
+
 }
