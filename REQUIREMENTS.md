@@ -5,7 +5,7 @@
 - **Basic proposal**: select picture from the device in order to add it to the article.
 - **Advanced proposal**: add a new Android activity to take the picture.
 - REST services are used. (https://sanger.dia.fi.upm.es/pmd-task/). Check doc information about services calls.
-- Add progress bar while loading the articles in the ArticlesList.java file.
+- **Add progress bar while loading the articles in the ArticlesList.java file.**
 
 **Main screen**
 - ~~Show a list of articles available in the server as anonymous user (ordered by date).~~
@@ -18,6 +18,7 @@
 - Indicator to show if the user is logged in or not. 
 - If user is logged in: articles can be created, edited and removed.
 - If user is not logged in: user cannot edit newspaper content.
+- **Change login/logout buttons icons**
 
 **Article details**
 - Show title, subtitle, abstract, category, body and picture (if it's included).
