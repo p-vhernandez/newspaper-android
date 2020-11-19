@@ -3,4 +3,11 @@
     <string name="article_image">Article image</string>
     <string name="login_button">Login button</string>
     <string name="logout_button">Logout button</string>
+    <string name="username">Username</string>
+    <string name="username_hint">username</string>
+    <string name="password">Password</string>
+    <string name="password_hint">********</string>
+    <string name="login_button_text">Log in!</string>
+    <string name="welcome_back">Welcome back!</string>
+    <string name="keep_me_logged_in">Keep me logged in</string>
 </resources>

@@ -1,5 +1,6 @@
 package com.programming.user.interfaces.newspaper;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -28,11 +29,14 @@ import java.util.Properties;
 public class ArticleListActivity extends AppCompatActivity {
 
     private List<Article> allArticles;
+    private List<Article> articlesToShow;
 
     private FloatingActionButton btnLogin;
     private FloatingActionButton btnLogout;
 
     private ListView lvArticles;
+
+    private ArticlesAdapder adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,16 +67,18 @@ public class ArticleListActivity extends AppCompatActivity {
         new Thread(() -> {
             try {
                 allArticles = ModelManager.getArticles();
+                articlesToShow = allArticles;
                 runOnUiThread(this::configureAdapter);
             } catch (ServerCommunicationError e) {
                 e.printStackTrace();
+                // TODO: show error
             }
         }).start();
     }
 
     private void configureAdapter() {
         Collections.sort(allArticles);
-        ArticlesAdapder adapter = new ArticlesAdapder(this, (ArrayList<Article>) allArticles);
+        adapter = new ArticlesAdapder((ArrayList<Article>) articlesToShow);
         lvArticles.setAdapter(adapter);
     }
 
@@ -80,11 +86,17 @@ public class ArticleListActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(view -> {
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
+            finish();
         });
 
         btnLogout.setOnClickListener(view -> {
             ModelManager.restConnection.clear();
             onRestart();
         });
+    }
+
+    private void filterArticles() {
+        // TODO
+        adapter.setArticlesToShow((ArrayList<Article>) articlesToShow);
     }
 }

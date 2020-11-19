@@ -19,20 +19,15 @@ import java.util.ArrayList;
 
 public class ArticlesAdapder extends BaseAdapter {
 
-    private Context context;
     private ArrayList<Article> allArticles;
 
-    public ArticlesAdapder(Context context, ArrayList<Article> allArticles) {
-        this.context = context;
+    public ArticlesAdapder(ArrayList<Article> allArticles) {
         this.allArticles = allArticles;
     }
 
-    public ArticlesAdapder(Context context) {
-        this.context = context;
-    }
-
-    public void setAllArticles(ArrayList<Article> allArticles) {
-        this.allArticles = allArticles;
+    public void setArticlesToShow(ArrayList<Article> articlesToShow) {
+        this.allArticles = articlesToShow;
+        notifyDataSetChanged();
     }
 
     @Override
