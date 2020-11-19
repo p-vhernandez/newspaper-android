@@ -7,11 +7,11 @@
 - REST services are used. (https://sanger.dia.fi.upm.es/pmd-task/). Check doc information about services calls.
 
 **Main screen**
-- Show a list of articles available in the server as anonymous user (ordered by date).
+- ~~Show a list of articles available in the server as anonymous user (ordered by date).~~
 - Navigation bar: show all buttons or links for all categories available in the newspaper (national, economy, sports, technology, all).
-- Articles shown must include: title, abstract, image thumbnail if exists and category.
-- List implemented with ListView or RecyclerView.
-- For each row a custom layout will be implemented.
+- ~~Articles shown must include: title, abstract, image thumbnail if exists and category.~~
+- ~~List implemented with ListView or RecyclerView.~~
+- ~~For each row a custom layout will be implemented.~~
 - Every article in the list should be linked to the details page.
 - A login button will be included (optional).
 - Indicator to show if the user is logged in or not. 
