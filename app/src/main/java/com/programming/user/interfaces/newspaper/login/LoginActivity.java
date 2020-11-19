@@ -1,6 +1,8 @@
 package com.programming.user.interfaces.newspaper.login;
 
-public class LoginActivity {
+import androidx.appcompat.app.AppCompatActivity;
+
+public class LoginActivity extends AppCompatActivity {
 
 
 

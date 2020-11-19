@@ -12,7 +12,7 @@ android {
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
-
+        flavorDimensions "env"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -20,6 +20,15 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    productFlavors {
+        pre {
+            dimension "env"
+            buildConfigField "String", "SERVER_URL", "\"https://sanger.dia.fi.upm.es/pmd-task/\""
+            buildConfigField "String", "GROUP_ID", "\"DEV_TEAM_03\""
+            buildConfigField "String", "GROUP_PSWD", "\"3553\""
         }
     }
 
@@ -34,10 +43,16 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.google.android.material:material:1.2.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation 'androidx.preference:preference:1.1.1'
+    implementation 'com.squareup.okhttp3:okhttp:4.4.0'
+    implementation 'androidx.multidex:multidex:2.0.1'
+
     testImplementation 'junit:junit:4.13.1'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
-    implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1'
+    implementation('com.googlecode.json-simple:json-simple:1.1.1') {
+        exclude group: 'org.hamcrest', module: 'hamcrest-core'
+    }
 
 }

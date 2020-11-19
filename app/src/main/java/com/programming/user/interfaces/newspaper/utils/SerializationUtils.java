@@ -77,7 +77,7 @@ public class SerializationUtils {
         int finalh = h;
         double factor = 1.0d;
 
-        if (src != null) {
+        if (src != null || !src.equals("")) {
             if (src.getWidth() > src.getHeight()) {
                 factor = ((double) src.getHeight() / (double) src.getWidth());
                 finalh = (int) (finalw * factor);
