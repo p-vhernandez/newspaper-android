@@ -28,9 +28,9 @@
 - It is not mandatory to have a login. 
   - If it's implemented, user must be logged in to modify the article's picture.
   - It it's not, user can directly access to modify the picture of the selected article.
-- New activity or form.
+- ~~New activity or form.~~
 - User will be able to save session using e "remember me" button. API Key will be stored in the app preferences, so no login is needed in next app executions.
-- Login button should be changed to Sign out button when user is logged in.
+- ~~Login button should be changed to Sign out button when user is logged in.~~
 
 
 **See notes section for further clarifications**
