@@ -5,6 +5,7 @@
 - **Basic proposal**: select picture from the device in order to add it to the article.
 - **Advanced proposal**: add a new Android activity to take the picture.
 - REST services are used. (https://sanger.dia.fi.upm.es/pmd-task/). Check doc information about services calls.
+- Add progress bar while loading the articles in the ArticlesList.java file.
 
 **Main screen**
 - ~~Show a list of articles available in the server as anonymous user (ordered by date).~~
