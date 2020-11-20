@@ -16,7 +16,7 @@ import com.programming.user.interfaces.newspaper.network.exceptions.Authenticati
 
 import java.util.Properties;
 
-public class SplashActivity extends AppCompatActivity {
+public class SplashActivity extends ActivityTemplate {
 
     private final int SPLASH_DISPLAY_LENGTH = 2000;
 
@@ -57,5 +57,6 @@ public class SplashActivity extends AppCompatActivity {
     private void goToArticlesList() {
         Intent intent = new Intent(this, ArticleListActivity.class);
         startActivity(intent);
+        finish();
     }
 }

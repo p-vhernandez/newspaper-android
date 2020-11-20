@@ -1,32 +1,25 @@
 package com.programming.user.interfaces.newspaper;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.programming.user.interfaces.newspaper.login.LoginActivity;
 import com.programming.user.interfaces.newspaper.model.Article;
-import com.programming.user.interfaces.newspaper.network.LoginREST;
 import com.programming.user.interfaces.newspaper.network.ModelManager;
-import com.programming.user.interfaces.newspaper.network.RESTConnection;
-import com.programming.user.interfaces.newspaper.network.exceptions.AuthenticationError;
 import com.programming.user.interfaces.newspaper.network.exceptions.ServerCommunicationError;
-import com.programming.user.interfaces.newspaper.tasks.LoadArticlesTask;
+import com.programming.user.interfaces.newspaper.utils.PreferencesManager;
 import com.programming.user.interfaces.newspaper.utils.adapters.ArticlesAdapder;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Properties;
 
-public class ArticleListActivity extends AppCompatActivity {
+public class ArticleListActivity extends ActivityTemplate {
 
     private List<Article> allArticles;
     private List<Article> articlesToShow;
@@ -38,6 +31,8 @@ public class ArticleListActivity extends AppCompatActivity {
 
     private ArticlesAdapder adapter;
 
+    private TextView tvWelcomeBack;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,19 +43,46 @@ public class ArticleListActivity extends AppCompatActivity {
     }
 
     private void initialize() {
+        tvWelcomeBack = findViewById(R.id.welcome_back);
         lvArticles = findViewById(R.id.listArticles);
         btnLogin = findViewById(R.id.login_button);
         btnLogout = findViewById(R.id.logout_button);
 
+        checkUserLoggedIn();
+        configureClickListeners();
+    }
+
+    private void checkUserLoggedIn() {
         if (ModelManager.getIdUser() == null) {
             btnLogin.setVisibility(View.VISIBLE);
             btnLogout.setVisibility(View.GONE);
+            tvWelcomeBack.setVisibility(View.GONE);
         } else {
             btnLogin.setVisibility(View.GONE);
             btnLogout.setVisibility(View.VISIBLE);
-        }
 
-        configureClickListeners();
+            String txtWelcome = getResources().getString(R.string.welcome_back_home_page) + " " +
+                    PreferencesManager.getUserName(this) + "!";
+            tvWelcomeBack.setText(txtWelcome);
+            tvWelcomeBack.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void configureClickListeners() {
+        btnLogin.setOnClickListener(view -> {
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+        });
+
+        btnLogout.setOnClickListener(view -> {
+            ModelManager.restConnection.clear();
+
+            PreferencesManager.setUserLoggedIn(this, false);
+            PreferencesManager.setUserName(this, "");
+            PreferencesManager.setUserApiKey(this, "");
+
+            recreate();
+        });
     }
 
     private void downloadArticles() {
@@ -80,19 +102,6 @@ public class ArticleListActivity extends AppCompatActivity {
         Collections.sort(allArticles);
         adapter = new ArticlesAdapder((ArrayList<Article>) articlesToShow);
         lvArticles.setAdapter(adapter);
-    }
-
-    private void configureClickListeners() {
-        btnLogin.setOnClickListener(view -> {
-            Intent intent = new Intent(this, LoginActivity.class);
-            startActivity(intent);
-            finish();
-        });
-
-        btnLogout.setOnClickListener(view -> {
-            ModelManager.restConnection.clear();
-            onRestart();
-        });
     }
 
     private void filterArticles() {

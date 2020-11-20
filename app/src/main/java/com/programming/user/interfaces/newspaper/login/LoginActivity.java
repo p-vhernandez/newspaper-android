@@ -13,6 +13,7 @@ import com.programming.user.interfaces.newspaper.R;
 import com.programming.user.interfaces.newspaper.network.LoginREST;
 import com.programming.user.interfaces.newspaper.network.ModelManager;
 import com.programming.user.interfaces.newspaper.network.exceptions.AuthenticationError;
+import com.programming.user.interfaces.newspaper.utils.PreferencesManager;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -59,10 +60,14 @@ public class LoginActivity extends AppCompatActivity {
         new Thread(() -> {
             try {
                 LoginREST.login(username, password);
+                PreferencesManager.setUserName(this, username);
 
                 if (keepMeLoggedIn) {
                     ModelManager.stayloggedin(ModelManager.getIdUser(),
                             ModelManager.getLoggedAPIKey(), ModelManager.getLoggedAuthType());
+
+                    PreferencesManager.setUserLoggedIn(this, true);
+                    PreferencesManager.setUserApiKey(this, ModelManager.getLoggedAPIKey());
                 }
 
                 runOnUiThread(this::goBackToArticlesList);
@@ -75,6 +80,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void goBackToArticlesList() {
         Intent intent = new Intent(this, ArticleListActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
         finish();
     }
