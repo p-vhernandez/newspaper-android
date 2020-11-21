@@ -1,11 +1,17 @@
 package com.programming.user.interfaces.newspaper;
 
+import android.app.AlertDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.RadioGroup;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.programming.user.interfaces.newspaper.login.LoginActivity;
@@ -19,7 +25,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class ArticleListActivity extends ActivityTemplate {
+public class ArticleListActivity extends AppCompatActivity {
 
     private List<Article> allArticles;
     private List<Article> articlesToShow;
@@ -33,6 +39,8 @@ public class ArticleListActivity extends ActivityTemplate {
 
     private TextView tvWelcomeBack;
 
+    private String selectedFilter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +48,56 @@ public class ArticleListActivity extends ActivityTemplate {
 
         initialize();
         downloadArticles();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int itemID = item.getItemId();
+
+        if (itemID == R.id.filter_button) {
+            showFiltersPopup();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void showFiltersPopup() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        final View customDialogView = getLayoutInflater().inflate(R.layout.custom_popup_filters, null);
+        builder.setView(customDialogView);
+
+        builder.setPositiveButton("Accept", (dialogInterface, i) -> {
+            RadioGroup radioGroup = customDialogView.findViewById(R.id.filter_group);
+            int selectedID = radioGroup.getCheckedRadioButtonId();
+
+            if (selectedID != -1) {
+                if (selectedID == R.id.filter_national) {
+                    selectedFilter = getString(R.string.national);
+                } else if (selectedID == R.id.filter_economy) {
+                    selectedFilter = getString(R.string.economy);
+                } else if (selectedID == R.id.filter_sports) {
+                    selectedFilter = getString(R.string.sports);
+                } else if (selectedID == R.id.filter_technology) {
+                    selectedFilter = getString(R.string.technology);
+                } else if (selectedID == R.id.filter_all) {
+                    selectedFilter = getString(R.string.all);
+                }
+
+                notifyFilterChanged();
+            }
+        });
+
+        builder.setNegativeButton(getString(R.string.cancel), (dialogInterface, i) -> {
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     private void initialize() {
@@ -104,8 +162,19 @@ public class ArticleListActivity extends ActivityTemplate {
         lvArticles.setAdapter(adapter);
     }
 
-    private void filterArticles() {
-        // TODO
+    public void notifyFilterChanged() {
+        if (!selectedFilter.equals(getString(R.string.all))) {
+            articlesToShow = new ArrayList<>();
+
+            for (Article article : allArticles) {
+                if (article.getCategory().equals(selectedFilter)) {
+                    articlesToShow.add(article);
+                }
+            }
+        } else {
+            articlesToShow = allArticles;
+        }
+
         adapter.setArticlesToShow((ArrayList<Article>) articlesToShow);
     }
 }

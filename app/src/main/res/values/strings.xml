@@ -11,4 +11,12 @@
     <string name="welcome_back">Welcome back!</string>
     <string name="keep_me_logged_in">Keep me logged in</string>
     <string name="welcome_back_home_page">Welcome back,</string>
+    <string name="choose_filter">Choose which articles you want to see:</string>
+
+    <string name="national">National</string>
+    <string name="economy">Economy</string>
+    <string name="sports">Sports</string>
+    <string name="technology">Technology</string>
+    <string name="all">All</string>
+    <string name="cancel">Cancel</string>
 </resources>
