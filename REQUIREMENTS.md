@@ -9,7 +9,7 @@
 
 **Main screen**
 - ~~Show a list of articles available in the server as anonymous user (ordered by date).~~
-- Navigation bar: show all buttons or links for all categories available in the newspaper (national, economy, sports, technology, all).
+- ~~Navigation bar: show all buttons or links for all categories available in the newspaper (national, economy, sports, technology, all).~~
 - ~~Articles shown must include: title, abstract, image thumbnail if exists and category.~~
 - ~~List implemented with ListView or RecyclerView.~~
 - ~~For each row a custom layout will be implemented.~~
