@@ -15,7 +15,7 @@
 - ~~For each row a custom layout will be implemented.~~
 - Every article in the list should be linked to the details page.
 - ~~A login button will be included (optional).~~
-- Indicator to show if the user is logged in or not. 
+- ~~Indicator to show if the user is logged in or not. ~~
 - If user is logged in: articles can be created, edited and removed.
 - ~~If user is not logged in: user cannot edit newspaper content.~~
 - **Change login/logout buttons icons**
@@ -33,7 +33,7 @@
 - ~~New activity or form.~~
 - User will be able to save session using e "remember me" button. API Key will be stored in the app preferences, so no login is needed in next app executions.
 - ~~Login button should be changed to Sign out button when user is logged in.~~
-- Refresh activity after log out.
+- ~~Refresh activity after log out.~~
 
 
 **See notes section for further clarifications**
