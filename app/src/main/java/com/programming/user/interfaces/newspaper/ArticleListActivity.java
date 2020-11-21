@@ -158,7 +158,7 @@ public class ArticleListActivity extends AppCompatActivity {
 
     private void configureAdapter() {
         Collections.sort(allArticles);
-        adapter = new ArticlesAdapder((ArrayList<Article>) articlesToShow);
+        adapter = new ArticlesAdapder(this, (ArrayList<Article>) articlesToShow);
         lvArticles.setAdapter(adapter);
     }
 
