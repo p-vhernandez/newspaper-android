@@ -57,5 +57,6 @@ public class SplashActivity extends AppCompatActivity {
     private void goToArticlesList() {
         Intent intent = new Intent(this, ArticleListActivity.class);
         startActivity(intent);
+        finish();
     }
 }

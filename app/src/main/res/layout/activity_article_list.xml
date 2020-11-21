@@ -7,41 +7,59 @@
     android:background="@android:color/white"
     tools:context=".ArticleListActivity">
 
+    <TextView
+        android:id="@+id/welcome_back"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/worksansm"
+        android:text="@string/welcome_back_home_page"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:padding="10dp"/>
+
     <ListView
         android:id="@+id/listArticles"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@android:color/white"
+        android:layout_height="wrap_content"
         android:layout_margin="10dp"
+        android:background="@android:color/white"
         android:divider="@android:color/transparent"
-        android:dividerHeight="10dp"/>
+        android:dividerHeight="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/welcome_back" />
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:orientation="vertical"
         android:layout_marginEnd="40dp"
-        android:layout_marginBottom="40dp">
+        android:layout_marginBottom="40dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/login_button"
             android:layout_width="70dp"
             android:layout_height="70dp"
-            android:src="@drawable/ic_login"
-            android:padding="10dp"
             android:layout_gravity="center"
-            android:contentDescription="@string/login_button" />
+            android:contentDescription="@string/login_button"
+            android:src="@drawable/ic_login"
+            app:fabCustomSize="70dp"
+            app:maxImageSize="40dp" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/logout_button"
             android:layout_width="70dp"
             android:layout_height="70dp"
-            android:visibility="gone"
-            android:padding="10dp"
+            android:contentDescription="@string/logout_button"
             android:src="@drawable/ic_logout"
-            android:contentDescription="@string/logout_button" />
+            android:visibility="gone"
+            app:fabCustomSize="70dp"
+            app:maxImageSize="40dp" />
 
     </LinearLayout>
 
