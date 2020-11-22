@@ -147,12 +147,7 @@ public class ArticleListActivity extends AppCompatActivity {
     private void downloadArticles() {
         new Thread(() -> {
             try {
-//                if (PreferencesManager.getUserLoggedIn(this)) {
-                    allArticles = ArticlesREST.getArticlesFrom(-1, -1);
-//                } else {
-//                    allArticles = ModelManager.getArticles();
-//                }
-
+                allArticles = ModelManager.getArticles(this);
                 articlesToShow = allArticles;
                 runOnUiThread(this::configureAdapter);
             } catch (ServerCommunicationError e) {

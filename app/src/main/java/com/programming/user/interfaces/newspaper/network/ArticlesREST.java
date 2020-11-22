@@ -165,7 +165,7 @@ public class ArticlesREST {
         return result;
     }
 
-    private static int saveArticle(Article a) throws ServerCommunicationError {
+    public static int saveArticle(Article a) throws ServerCommunicationError {
         try {
             String parameters = "";
             String request = ModelManager.restConnection.serviceURL + ModelManager.ARTICLES_METHOD;
@@ -206,7 +206,7 @@ public class ArticlesREST {
         }
     }
 
-    private static void deleteArticle(int idArticle) throws ServerCommunicationError {
+    public static void deleteArticle(int idArticle) throws ServerCommunicationError {
         try {
             String parameters = "";
             String request = ModelManager.restConnection.serviceURL + ModelManager.ARTICLES_METHOD + "/" + idArticle;

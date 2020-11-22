@@ -1,23 +1,28 @@
 package com.programming.user.interfaces.newspaper.details;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
-import android.util.Base64;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
+import com.programming.user.interfaces.newspaper.ArticleListActivity;
 import com.programming.user.interfaces.newspaper.R;
 import com.programming.user.interfaces.newspaper.model.Article;
 import com.programming.user.interfaces.newspaper.network.ArticlesREST;
+import com.programming.user.interfaces.newspaper.network.ModelManager;
 import com.programming.user.interfaces.newspaper.network.exceptions.ServerCommunicationError;
+import com.programming.user.interfaces.newspaper.utils.PreferencesManager;
 import com.programming.user.interfaces.newspaper.utils.SerializationUtils;
 
 public class ArticleDetailsActivity extends AppCompatActivity {
@@ -26,6 +31,7 @@ public class ArticleDetailsActivity extends AppCompatActivity {
 
     private int articleID;
 
+    private TextView tvWelcomeBack;
     private TextView articleTitle;
     private TextView articleSubtitle;
     private TextView articleAbstract;
@@ -36,6 +42,11 @@ public class ArticleDetailsActivity extends AppCompatActivity {
     private ImageView articleImage;
 
     private Article article;
+
+    private ConstraintLayout loggedHeader;
+
+    private ImageButton btnEdit;
+    private ImageButton btnDelete;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -62,6 +73,40 @@ public class ArticleDetailsActivity extends AppCompatActivity {
         articleCategory = findViewById(R.id.article_category);
         articleModInfo = findViewById(R.id.article_mod_info);
         articleImage = findViewById(R.id.article_image);
+
+        loggedHeader = findViewById(R.id.logged_header);
+        tvWelcomeBack = findViewById(R.id.welcome_back);
+        btnEdit = findViewById(R.id.button_edit);
+        btnDelete = findViewById(R.id.button_delete);
+
+
+        checkUserLoggedIn();
+        configureClickListeners();
+    }
+
+    private void checkUserLoggedIn() {
+        if (ModelManager.getIdUser() != null) {
+            loggedHeader.setVisibility(View.VISIBLE);
+            tvWelcomeBack.setVisibility(View.VISIBLE);
+
+            String txtWelcome = getResources().getString(R.string.welcome_back_home_page) + " " +
+                    PreferencesManager.getUserName(this) + "!";
+            tvWelcomeBack.setText(txtWelcome);
+            tvWelcomeBack.setVisibility(View.VISIBLE);
+        } else {
+            loggedHeader.setVisibility(View.GONE);
+            tvWelcomeBack.setVisibility(View.GONE);
+        }
+    }
+
+    private void configureClickListeners() {
+        btnEdit.setOnClickListener(view -> {
+            dialogConfirmEdition();
+        });
+
+        btnDelete.setOnClickListener(view -> {
+            dialogConfirmDeletion();
+        });
     }
 
     private void downloadArticleInfo() {
@@ -103,5 +148,57 @@ public class ArticleDetailsActivity extends AppCompatActivity {
         } catch (ServerCommunicationError serverCommunicationError) {
             serverCommunicationError.printStackTrace();
         }
+    }
+
+    private void dialogConfirmEdition() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.edition_warning);
+        builder.setMessage(R.string.confirm_edition);
+
+        builder.setPositiveButton(R.string.edit, (dialogInterface, i) -> {
+            // TODO: edit article
+        });
+
+        builder.setNegativeButton(getString(R.string.cancel), (dialogInterface, i) -> {
+
+        });
+
+        Dialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void dialogConfirmDeletion() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.confirm_deletion);
+        builder.setMessage(R.string.deletion_warning);
+
+        builder.setPositiveButton(R.string.delete, (dialogInterface, i) -> {
+            deleteArticle();
+        });
+
+        builder.setNegativeButton(getString(R.string.cancel), (dialogInterface, i) -> {
+
+        });
+
+        Dialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void deleteArticle() {
+        new Thread(() -> {
+            try {
+                ArticlesREST.deleteArticle(articleID);
+                backToArticlesList();
+            } catch (ServerCommunicationError serverCommunicationError) {
+                serverCommunicationError.printStackTrace();
+            }
+        }).start();
+    }
+
+    private void backToArticlesList() {
+        Intent intent = new Intent(this, ArticleListActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+        finish();
     }
 }

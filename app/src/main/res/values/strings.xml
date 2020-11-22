@@ -19,4 +19,12 @@
     <string name="technology">Technology</string>
     <string name="all">All</string>
     <string name="cancel">Cancel</string>
+    <string name="edit_article">Edit article</string>
+    <string name="delete_article">Delete article</string>
+    <string name="confirm_deletion">Are you sure you want to delete the article?</string>
+    <string name="deletion_warning">This action cannot be reverted.</string>
+    <string name="delete">Delete</string>
+    <string name="edition_warning">You are about to edit this article!</string>
+    <string name="confirm_edition">You will be able to edit the article\'s picture, do you want to continue?</string>
+    <string name="edit">Edit</string>
 </resources>
