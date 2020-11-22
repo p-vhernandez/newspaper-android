@@ -6,11 +6,14 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,6 +21,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.programming.user.interfaces.newspaper.ArticleListActivity;
 import com.programming.user.interfaces.newspaper.R;
+import com.programming.user.interfaces.newspaper.add.AddArticleActivity;
 import com.programming.user.interfaces.newspaper.model.Article;
 import com.programming.user.interfaces.newspaper.network.ArticlesREST;
 import com.programming.user.interfaces.newspaper.network.ModelManager;
@@ -63,6 +67,39 @@ public class ArticleDetailsActivity extends AppCompatActivity {
         } else {
             // TODO: show error ? & go back to list
         }
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        menu.findItem(R.id.filter_button).setVisible(false);
+        if (ModelManager.getIdUser() == null) {
+            menu.findItem(R.id.add_button).setVisible(false);
+        }
+
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int itemID = item.getItemId();
+
+        if (itemID == R.id.add_button) {
+            goToAddArticleForm();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void goToAddArticleForm() {
+        Intent intent = new Intent(this, AddArticleActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     private void initialize() {

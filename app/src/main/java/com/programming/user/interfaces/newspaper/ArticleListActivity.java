@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.programming.user.interfaces.newspaper.add.AddArticleActivity;
 import com.programming.user.interfaces.newspaper.login.LoginActivity;
 import com.programming.user.interfaces.newspaper.model.Article;
 import com.programming.user.interfaces.newspaper.network.ArticlesREST;
@@ -52,6 +53,15 @@ public class ArticleListActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        if (ModelManager.getIdUser() == null) {
+            menu.findItem(R.id.add_button).setVisible(false);
+        }
+
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
         return super.onCreateOptionsMenu(menu);
@@ -63,6 +73,8 @@ public class ArticleListActivity extends AppCompatActivity {
 
         if (itemID == R.id.filter_button) {
             showFiltersPopup();
+        } else if (itemID == R.id.add_button) {
+            goToAddArticleForm();
         }
 
         return super.onOptionsItemSelected(item);
@@ -99,6 +111,11 @@ public class ArticleListActivity extends AppCompatActivity {
 
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    private void goToAddArticleForm() {
+        Intent intent = new Intent(this, AddArticleActivity.class);
+        startActivity(intent);
     }
 
     private void initialize() {

@@ -18,6 +18,15 @@
     <string name="sports">Sports</string>
     <string name="technology">Technology</string>
     <string name="all">All</string>
+
+    <string-array name="categories">
+        <item>National</item>
+        <item>Economy</item>
+        <item>Sports</item>
+        <item>Technology</item>
+        <item>All</item>
+    </string-array>
+
     <string name="cancel">Cancel</string>
     <string name="edit_article">Edit article</string>
     <string name="delete_article">Delete article</string>
@@ -27,4 +36,11 @@
     <string name="edition_warning">You are about to edit this article!</string>
     <string name="confirm_edition">You will be able to edit the article\'s picture, do you want to continue?</string>
     <string name="edit">Edit</string>
+    <string name="article_title_form">Article title *</string>
+    <string name="article_subtitle_form">Article subtitle *</string>
+    <string name="article_abstract_form">Article abstract *</string>
+    <string name="article_body_form">Article body *</string>
+    <string name="create_article">CREATE ARTICLE</string>
+    <string name="article_category_form">Article category *</string>
+    <string name="add_image">ADD IMAGE TO THE ARTICLE</string>
 </resources>

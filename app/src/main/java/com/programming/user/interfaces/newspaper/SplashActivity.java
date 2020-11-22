@@ -18,8 +18,6 @@ import java.util.Properties;
 
 public class SplashActivity extends AppCompatActivity {
 
-    private final int SPLASH_DISPLAY_LENGTH = 2000;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +42,7 @@ public class SplashActivity extends AppCompatActivity {
 
         // Show splash screen for 2 seconds
         // before launching the app
+        int SPLASH_DISPLAY_LENGTH = 2000;
         new Handler().postDelayed(() -> {
             try {
                 ModelManager.configureConnection(restProperties);
