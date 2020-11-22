@@ -15,7 +15,7 @@
 - ~~For each row a custom layout will be implemented.~~
 - ~~Every article in the list should be linked to the details page.~~
 - ~~A login button will be included (optional).~~
-- ~~Indicator to show if the user is logged in or not. ~~
+- ~~Indicator to show if the user is logged in or not.~~
 - If user is logged in: articles can be created, edited and removed.
 - ~~If user is not logged in: user cannot edit newspaper content.~~
 - **Change login/logout buttons icons**
