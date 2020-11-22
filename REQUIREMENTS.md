@@ -25,11 +25,11 @@
 - ~~If the image is not included, a default image must be shown.~~
 - ~~Modification date and user id who has modified the content must be shown.~~ 
 - Articles cannot be modified with a form. Just the image can be edited. 
-- **ARTICLE'S USER ID ARE ALWAYS 0**
+- ~~**ARTICLE'S USER ID ARE ALWAYS 0**~~
 
 **Login - optional**
-- It is not mandatory to have a login. 
-  - If it's implemented, user must be logged in to modify the article's picture.
+- ~~It is not mandatory to have a login.~~
+  - ~~If it's implemented, user must be logged in to modify the article's picture.~~
   - ~~It it's not, user can directly access to modify the picture of the selected article.~~
 - ~~New activity or form.~~
 - User will be able to save session using e "remember me" button. API Key will be stored in the app preferences, so no login is needed in next app executions.
