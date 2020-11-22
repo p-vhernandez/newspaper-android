@@ -21,7 +21,7 @@
 - **Change login/logout buttons icons**
 
 **Article details**
-- Show title, subtitle, abstract, category, body and picture (if it's included).
+- ~~Show title, subtitle, abstract, category, body and picture (if it's included).~~
 - If the image is not included, a default image must be shown.
 - Modification date and user id who has modified the content must be shown.
 - Articles cannot be modified with a form. Just the image can be edited. 
