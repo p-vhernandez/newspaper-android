@@ -13,18 +13,19 @@
 - ~~Articles shown must include: title, abstract, image thumbnail if exists and category.~~
 - ~~List implemented with ListView or RecyclerView.~~
 - ~~For each row a custom layout will be implemented.~~
-- Every article in the list should be linked to the details page.
+- ~~Every article in the list should be linked to the details page.~~
 - ~~A login button will be included (optional).~~
-- ~~Indicator to show if the user is logged in or not. ~~
+- ~~Indicator to show if the user is logged in or not.~~
 - If user is logged in: articles can be created, edited and removed.
 - ~~If user is not logged in: user cannot edit newspaper content.~~
 - **Change login/logout buttons icons**
 
 **Article details**
-- Show title, subtitle, abstract, category, body and picture (if it's included).
-- If the image is not included, a default image must be shown.
-- Modification date and user id who has modified the content must be shown.
+- ~~Show title, subtitle, abstract, category, body and picture (if it's included).~~
+- ~~If the image is not included, a default image must be shown.~~
+- ~~Modification date and user id who has modified the content must be shown.~~ 
 - Articles cannot be modified with a form. Just the image can be edited. 
+- **ARTICLE'S USER ID ARE ALWAYS 0**
 
 **Login - optional**
 - It is not mandatory to have a login. 
