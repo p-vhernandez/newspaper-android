@@ -13,6 +13,7 @@ public class ModelManager {
 
     protected static final String LOGIN_METHOD = "login";
     protected static final String ARTICLES_METHOD = "articles";
+    protected static final String ARTICLE_METHOD = "article";
     protected static final String ARTICLES_IMAGE_METHOD = "article/image";
     protected static final String IMAGE_METHOD = "image/";
 

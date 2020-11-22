@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Build;
+import android.text.Html;
 import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +17,7 @@ import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-import com.programming.user.interfaces.newspaper.ArticleDetailsActivity;
+import com.programming.user.interfaces.newspaper.details.ArticleDetailsActivity;
 import com.programming.user.interfaces.newspaper.R;
 import com.programming.user.interfaces.newspaper.model.Article;
 
@@ -23,7 +25,7 @@ import java.util.ArrayList;
 
 public class ArticlesAdapder extends BaseAdapter {
 
-    private Context context;
+    private final Context context;
     private ArrayList<Article> allArticles;
 
     public ArticlesAdapder(Context context, ArrayList<Article> allArticles) {
@@ -65,9 +67,14 @@ public class ArticlesAdapder extends BaseAdapter {
             ImageView articleImage = row.findViewById(R.id.article_image);
 
             articleTitle.setText(article.getTitle());
-            articleAbstract.setText(article.getaAbstract());
             articleCategory.setText(article.getCategory());
 
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                articleAbstract.setText(Html.fromHtml(article.getaAbstract(), Html.FROM_HTML_MODE_COMPACT));
+            } else {
+                articleAbstract.setText(Html.fromHtml(article.getaAbstract()));
+            }
+            
             byte[] decodeString = Base64.decode(article.getImage().getImage(), Base64.DEFAULT);
             Bitmap decodedByte = BitmapFactory.decodeByteArray(decodeString, 0, decodeString.length);
             articleImage.setImageBitmap(decodedByte);

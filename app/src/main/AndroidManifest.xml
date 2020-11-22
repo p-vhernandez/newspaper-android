@@ -23,6 +23,7 @@
 
         <activity android:name=".ArticleListActivity"> </activity>
         <activity android:name=".login.LoginActivity"> </activity>
+        <activity android:name=".details.ArticleDetailsActivity"> </activity>
     </application>
 
 </manifest>

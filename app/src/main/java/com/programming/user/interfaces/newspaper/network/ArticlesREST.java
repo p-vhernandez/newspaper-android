@@ -82,7 +82,7 @@ public class ArticlesREST {
             limits = "/" + buffer + "/" + offset;
         }
 
-        List<Article> result = new ArrayList<Article>();
+        List<Article> result = new ArrayList<>();
         try {
             String parameters = "";
             String request = ModelManager.restConnection.serviceURL + ModelManager.ARTICLES_METHOD + limits;
@@ -130,7 +130,7 @@ public class ArticlesREST {
 
         try {
             String parameters = "";
-            String request = ModelManager.restConnection.serviceURL + ModelManager.ARTICLES_METHOD + "/" + idArticle;
+            String request = ModelManager.restConnection.serviceURL + ModelManager.ARTICLE_METHOD + "/" + idArticle;
             URL url = new URL(request);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
