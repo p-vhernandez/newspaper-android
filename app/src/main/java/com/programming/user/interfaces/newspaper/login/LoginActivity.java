@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.programming.user.interfaces.newspaper.ArticleListActivity;
 import com.programming.user.interfaces.newspaper.R;
+import com.programming.user.interfaces.newspaper.network.ArticlesREST;
 import com.programming.user.interfaces.newspaper.network.LoginREST;
 import com.programming.user.interfaces.newspaper.network.ModelManager;
 import com.programming.user.interfaces.newspaper.network.exceptions.AuthenticationError;

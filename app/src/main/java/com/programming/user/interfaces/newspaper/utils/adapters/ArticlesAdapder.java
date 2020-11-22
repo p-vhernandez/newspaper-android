@@ -20,6 +20,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import com.programming.user.interfaces.newspaper.details.ArticleDetailsActivity;
 import com.programming.user.interfaces.newspaper.R;
 import com.programming.user.interfaces.newspaper.model.Article;
+import com.programming.user.interfaces.newspaper.utils.SerializationUtils;
 
 import java.util.ArrayList;
 
@@ -53,6 +54,7 @@ public class ArticlesAdapder extends BaseAdapter {
         return allArticles.get(i).getId();
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -74,14 +76,14 @@ public class ArticlesAdapder extends BaseAdapter {
             } else {
                 articleAbstract.setText(Html.fromHtml(article.getaAbstract()));
             }
-            
-            byte[] decodeString = Base64.decode(article.getImage().getImage(), Base64.DEFAULT);
-            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodeString, 0, decodeString.length);
-            articleImage.setImageBitmap(decodedByte);
 
-            articleLayout.setOnClickListener(view -> {
-                goToArticleDetailsPage(article);
-            });
+            if (article.getImage() != null) {
+                articleImage.setImageBitmap(SerializationUtils.base64StringToImg(article.getImage().getImage()));
+            } else {
+                articleImage.setImageDrawable(context.getDrawable(R.drawable.ic_news));
+            }
+
+            articleLayout.setOnClickListener(view -> goToArticleDetailsPage(article));
         } catch (Exception e) {
             e.printStackTrace();
         }

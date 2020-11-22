@@ -1,5 +1,6 @@
 package com.programming.user.interfaces.newspaper.details;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -17,6 +18,7 @@ import com.programming.user.interfaces.newspaper.R;
 import com.programming.user.interfaces.newspaper.model.Article;
 import com.programming.user.interfaces.newspaper.network.ArticlesREST;
 import com.programming.user.interfaces.newspaper.network.exceptions.ServerCommunicationError;
+import com.programming.user.interfaces.newspaper.utils.SerializationUtils;
 
 public class ArticleDetailsActivity extends AppCompatActivity {
 
@@ -29,6 +31,7 @@ public class ArticleDetailsActivity extends AppCompatActivity {
     private TextView articleAbstract;
     private TextView articleBody;
     private TextView articleCategory;
+    private TextView articleModInfo;
 
     private ImageView articleImage;
 
@@ -57,6 +60,7 @@ public class ArticleDetailsActivity extends AppCompatActivity {
         articleAbstract = findViewById(R.id.article_abstract);
         articleBody = findViewById(R.id.article_body);
         articleCategory = findViewById(R.id.article_category);
+        articleModInfo = findViewById(R.id.article_mod_info);
         articleImage = findViewById(R.id.article_image);
     }
 
@@ -73,6 +77,7 @@ public class ArticleDetailsActivity extends AppCompatActivity {
         }).start();
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     private void displayArticleInfo() {
         try {
             articleTitle.setText(article.getTitle());
@@ -87,9 +92,14 @@ public class ArticleDetailsActivity extends AppCompatActivity {
                 articleBody.setText(Html.fromHtml(article.getBody()));
             }
 
-            byte[] decodeString = Base64.decode(article.getImage().getImage(), Base64.DEFAULT);
-            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodeString, 0, decodeString.length);
-            articleImage.setImageBitmap(decodedByte);
+            String modInfo = String.valueOf(article.getIdUser()) + " · " + SerializationUtils.dateToString(article.getLastUpdate());
+            articleModInfo.setText(modInfo);
+
+            if (article.getImage() != null) {
+                articleImage.setImageBitmap(SerializationUtils.base64StringToImg(article.getImage().getImage()));
+            } else {
+                articleImage.setImageDrawable(getDrawable(R.drawable.ic_news));
+            }
         } catch (ServerCommunicationError serverCommunicationError) {
             serverCommunicationError.printStackTrace();
         }

@@ -53,10 +53,10 @@ public class ArticlesREST {
                 List<JSONObject> objects = ServiceCallUtils.readRestResultFromList(res);
 
                 for (JSONObject jsonObject : objects) {
-                    if (jsonObject.get("thumbnail_image") != null
-                            || !Objects.requireNonNull(jsonObject.get("thumbnail_image")).equals("")) {
+//                    if (jsonObject.get("thumbnail_image") != null
+//                            || !Objects.requireNonNull(jsonObject.get("thumbnail_image")).equals("")) {
                         result.add(new Article(jsonObject));
-                    }
+//                    }
                 }
 
                 Logger.log(Logger.INFO, objects.size() + " objects (Article) retrieved");
@@ -67,6 +67,7 @@ public class ArticlesREST {
             Logger.log(Logger.ERROR, "Listing articles :" + e.getClass() + " ( " + e.getMessage() + ")");
             throw new ServerCommunicationError(e.getClass() + " ( " + e.getMessage() + ")");
         }
+
 
         return result;
     }

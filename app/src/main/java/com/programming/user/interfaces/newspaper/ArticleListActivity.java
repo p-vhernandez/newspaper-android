@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.programming.user.interfaces.newspaper.login.LoginActivity;
 import com.programming.user.interfaces.newspaper.model.Article;
+import com.programming.user.interfaces.newspaper.network.ArticlesREST;
 import com.programming.user.interfaces.newspaper.network.ModelManager;
 import com.programming.user.interfaces.newspaper.network.exceptions.ServerCommunicationError;
 import com.programming.user.interfaces.newspaper.utils.PreferencesManager;
@@ -146,7 +147,12 @@ public class ArticleListActivity extends AppCompatActivity {
     private void downloadArticles() {
         new Thread(() -> {
             try {
-                allArticles = ModelManager.getArticles();
+//                if (PreferencesManager.getUserLoggedIn(this)) {
+                    allArticles = ArticlesREST.getArticlesFrom(-1, -1);
+//                } else {
+//                    allArticles = ModelManager.getArticles();
+//                }
+
                 articlesToShow = allArticles;
                 runOnUiThread(this::configureAdapter);
             } catch (ServerCommunicationError e) {
@@ -157,7 +163,10 @@ public class ArticleListActivity extends AppCompatActivity {
     }
 
     private void configureAdapter() {
+        // Ordered by date, descendant
         Collections.sort(allArticles);
+        Collections.reverse(allArticles);
+
         adapter = new ArticlesAdapder(this, (ArrayList<Article>) articlesToShow);
         lvArticles.setAdapter(adapter);
     }
