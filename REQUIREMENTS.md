@@ -16,15 +16,16 @@
 - ~~Every article in the list should be linked to the details page.~~
 - ~~A login button will be included (optional).~~
 - ~~Indicator to show if the user is logged in or not.~~
-- If user is logged in: articles can be created, edited and removed.
+- ~~If user is logged in: articles can be created, edited and removed.~~
 - ~~If user is not logged in: user cannot edit newspaper content.~~
 - **Change login/logout buttons icons**
+- Image edition is not working with server's articles, only with articles created by our app.
 
 **Article details**
 - ~~Show title, subtitle, abstract, category, body and picture (if it's included).~~
 - ~~If the image is not included, a default image must be shown.~~
 - ~~Modification date and user id who has modified the content must be shown.~~ 
-- Articles cannot be modified with a form. Just the image can be edited. 
+- ~~Articles cannot be modified with a form. Just the image can be edited.~~
 - ~~**ARTICLE'S USER ID ARE ALWAYS 0**~~
 
 **Login - optional**
