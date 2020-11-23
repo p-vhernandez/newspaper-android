@@ -18,7 +18,7 @@
 - ~~Indicator to show if the user is logged in or not.~~
 - ~~If user is logged in: articles can be created, edited and removed.~~
 - ~~If user is not logged in: user cannot edit newspaper content.~~
-- **Change login/logout buttons icons**
+- Change login/logout buttons icons
 - Image edition is not working with server's articles, only with articles created by our app.
 
 **Article details**
