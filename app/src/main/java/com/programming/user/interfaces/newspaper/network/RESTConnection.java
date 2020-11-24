@@ -73,6 +73,22 @@ public class RESTConnection {
         serviceURL = ini.getProperty(ATTR_SERVICE_URL);
     }
 
+    public void setIdUser(String idUser) {
+        this.idUser = idUser;
+    }
+
+    public void setApikey(String apikey) {
+        this.apikey = apikey;
+    }
+
+    public void setAuthType(String authType) {
+        this.authType = authType;
+    }
+
+    public void setAdministrator(boolean administrator) {
+        this.isAdministrator = administrator;
+    }
+
     public void clear() {
         idUser = null;
         authType = null;

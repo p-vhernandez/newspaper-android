@@ -7,6 +7,14 @@
         android:id="@+id/filter_button"
         android:icon="@drawable/ic_filter"
         android:title=""
+        app:showAsAction="ifRoom"
+        android:iconTint="@android:color/white"
+        tools:targetApi="o" />
+
+    <item
+        android:id="@+id/add_button"
+        android:icon="@drawable/ic_add"
+        android:title=""
         app:showAsAction="always"
         android:iconTint="@android:color/white"
         tools:targetApi="o" />

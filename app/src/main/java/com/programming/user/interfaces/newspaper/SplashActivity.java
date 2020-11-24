@@ -13,12 +13,11 @@ import com.programming.user.interfaces.newspaper.network.LoginREST;
 import com.programming.user.interfaces.newspaper.network.ModelManager;
 import com.programming.user.interfaces.newspaper.network.RESTConnection;
 import com.programming.user.interfaces.newspaper.network.exceptions.AuthenticationError;
+import com.programming.user.interfaces.newspaper.utils.PreferencesManager;
 
 import java.util.Properties;
 
 public class SplashActivity extends AppCompatActivity {
-
-    private final int SPLASH_DISPLAY_LENGTH = 2000;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -44,9 +43,18 @@ public class SplashActivity extends AppCompatActivity {
 
         // Show splash screen for 2 seconds
         // before launching the app
+        int SPLASH_DISPLAY_LENGTH = 2000;
         new Handler().postDelayed(() -> {
             try {
                 ModelManager.configureConnection(restProperties);
+
+                if (PreferencesManager.getUserLoggedIn(this)) {
+                    ModelManager.restConnection.setIdUser(PreferencesManager.getUserID(this));
+                    ModelManager.restConnection.setAdministrator(PreferencesManager.getUserAdmin(this));
+                    ModelManager.restConnection.setApikey(PreferencesManager.getUserApiKey(this));
+                    ModelManager.restConnection.setAuthType(PreferencesManager.getUserAuthType(this));
+                }
+
                 goToArticlesList();
             } catch (AuthenticationError authenticationError) {
                 authenticationError.printStackTrace();

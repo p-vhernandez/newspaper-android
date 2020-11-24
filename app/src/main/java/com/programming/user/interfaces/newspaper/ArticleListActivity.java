@@ -1,8 +1,10 @@
 package com.programming.user.interfaces.newspaper;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,9 +16,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.programming.user.interfaces.newspaper.add.AddArticleActivity;
 import com.programming.user.interfaces.newspaper.login.LoginActivity;
 import com.programming.user.interfaces.newspaper.model.Article;
+import com.programming.user.interfaces.newspaper.network.ArticlesREST;
 import com.programming.user.interfaces.newspaper.network.ModelManager;
+import com.programming.user.interfaces.newspaper.network.exceptions.AuthenticationError;
 import com.programming.user.interfaces.newspaper.network.exceptions.ServerCommunicationError;
 import com.programming.user.interfaces.newspaper.utils.PreferencesManager;
 import com.programming.user.interfaces.newspaper.utils.adapters.ArticlesAdapder;
@@ -41,6 +46,8 @@ public class ArticleListActivity extends AppCompatActivity {
 
     private String selectedFilter;
 
+    private Dialog loadingDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +55,15 @@ public class ArticleListActivity extends AppCompatActivity {
 
         initialize();
         downloadArticles();
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        if (ModelManager.getIdUser() == null) {
+            menu.findItem(R.id.add_button).setVisible(false);
+        }
+
+        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override
@@ -62,6 +78,8 @@ public class ArticleListActivity extends AppCompatActivity {
 
         if (itemID == R.id.filter_button) {
             showFiltersPopup();
+        } else if (itemID == R.id.add_button) {
+            goToAddArticleForm();
         }
 
         return super.onOptionsItemSelected(item);
@@ -72,7 +90,7 @@ public class ArticleListActivity extends AppCompatActivity {
         final View customDialogView = getLayoutInflater().inflate(R.layout.custom_popup_filters, null);
         builder.setView(customDialogView);
 
-        builder.setPositiveButton("Accept", (dialogInterface, i) -> {
+        builder.setPositiveButton(R.string.accept, (dialogInterface, i) -> {
             RadioGroup radioGroup = customDialogView.findViewById(R.id.filter_group);
             int selectedID = radioGroup.getCheckedRadioButtonId();
 
@@ -98,6 +116,11 @@ public class ArticleListActivity extends AppCompatActivity {
 
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    private void goToAddArticleForm() {
+        Intent intent = new Intent(this, AddArticleActivity.class);
+        startActivity(intent);
     }
 
     private void initialize() {
@@ -144,9 +167,10 @@ public class ArticleListActivity extends AppCompatActivity {
     }
 
     private void downloadArticles() {
+        showLoading();
         new Thread(() -> {
             try {
-                allArticles = ModelManager.getArticles();
+                allArticles = ModelManager.getArticles(this);
                 articlesToShow = allArticles;
                 runOnUiThread(this::configureAdapter);
             } catch (ServerCommunicationError e) {
@@ -157,9 +181,15 @@ public class ArticleListActivity extends AppCompatActivity {
     }
 
     private void configureAdapter() {
+        // Ordered by date, descendant
         Collections.sort(allArticles);
-        adapter = new ArticlesAdapder((ArrayList<Article>) articlesToShow);
+        Collections.reverse(allArticles);
+
+        adapter = new ArticlesAdapder(this, (ArrayList<Article>) articlesToShow);
         lvArticles.setAdapter(adapter);
+
+        int LOADING_DISPLAY_LENGTH = 2000;
+        new Handler().postDelayed(this::hideLoading, LOADING_DISPLAY_LENGTH);
     }
 
     public void notifyFilterChanged() {
@@ -176,5 +206,20 @@ public class ArticleListActivity extends AppCompatActivity {
         }
 
         adapter.setArticlesToShow((ArrayList<Article>) articlesToShow);
+    }
+
+    private void showLoading() {
+        androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(this);
+        View customDialog = getLayoutInflater().inflate(R.layout.custom_popup_progress, null);
+        builder.setView(customDialog);
+
+        loadingDialog = builder.create();
+        loadingDialog.show();
+    }
+
+    private void hideLoading() {
+        if (loadingDialog != null) {
+            loadingDialog.dismiss();
+        }
     }
 }

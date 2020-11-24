@@ -2,6 +2,7 @@ package com.programming.user.interfaces.newspaper.login;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Display;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -10,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.programming.user.interfaces.newspaper.ArticleListActivity;
 import com.programming.user.interfaces.newspaper.R;
+import com.programming.user.interfaces.newspaper.network.ArticlesREST;
 import com.programming.user.interfaces.newspaper.network.LoginREST;
 import com.programming.user.interfaces.newspaper.network.ModelManager;
 import com.programming.user.interfaces.newspaper.network.exceptions.AuthenticationError;
@@ -67,7 +69,10 @@ public class LoginActivity extends AppCompatActivity {
                             ModelManager.getLoggedAPIKey(), ModelManager.getLoggedAuthType());
 
                     PreferencesManager.setUserLoggedIn(this, true);
+                    PreferencesManager.setUserID(this, ModelManager.getIdUser());
                     PreferencesManager.setUserApiKey(this, ModelManager.getLoggedAPIKey());
+                    PreferencesManager.setUserAuthType(this, ModelManager.getLoggedAuthType());
+                    PreferencesManager.setUserAdmin(this, ModelManager.isAdministrator());
                 }
 
                 runOnUiThread(this::goBackToArticlesList);

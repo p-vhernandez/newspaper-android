@@ -159,6 +159,13 @@ public class Article extends ModelEntity implements Comparable<Article> {
         return actualImage;
     }
 
+    public Image addImage(String b64Image, String description) throws ServerCommunicationError {
+        int order = 1;
+        Image img = new Image(order, getId(), description, b64Image);
+        image = img;
+        return img;
+    }
+
     public void setImage(Image image) {
         this.image = image;
     }
@@ -174,12 +181,12 @@ public class Article extends ModelEntity implements Comparable<Article> {
     @Override
     public String toString() {
         return "Article [id=" + getId()
-                +", titleText=" + title
-                +", abstractText=" + aAbstract
-                +  ", bodyText="	+ body + ", subtitleText=" + subtitle
-                +", image_description=" + imageDescription
-                +", image_data=" + image
-                +", thumbnail=" + thumbnail
+                + ", titleText=" + title
+                + ", abstractText=" + aAbstract
+                + ", bodyText=" + body + ", subtitleText=" + subtitle
+                + ", image_description=" + imageDescription
+                + ", image_data=" + image
+                + ", thumbnail=" + thumbnail
                 + "]";
     }
 
