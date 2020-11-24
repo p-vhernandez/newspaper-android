@@ -19,7 +19,7 @@
 - ~~If user is logged in: articles can be created, edited and removed.~~
 - ~~If user is not logged in: user cannot edit newspaper content.~~
 - Change login/logout buttons icons
-- Image edition is not working with server's articles, only with articles created by our app.
+- Image edition is not working with server's articles, only with articles created by our app. -- email him
 
 **Article details**
 - ~~Show title, subtitle, abstract, category, body and picture (if it's included).~~
@@ -33,9 +33,10 @@
   - ~~If it's implemented, user must be logged in to modify the article's picture.~~
   - ~~It it's not, user can directly access to modify the picture of the selected article.~~
 - ~~New activity or form.~~
-- User will be able to save session using e "remember me" button. API Key will be stored in the app preferences, so no login is needed in next app executions.
+- ~~User will be able to save session using e "remember me" button. API Key will be stored in the app preferences, so no login is needed in next app executions.~~
 - ~~Login button should be changed to Sign out button when user is logged in.~~
 - ~~Refresh activity after log out.~~
+- Double check "remember me" functionality.
 
 
 **See notes section for further clarifications**
