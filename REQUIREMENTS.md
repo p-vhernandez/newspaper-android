@@ -19,7 +19,7 @@
 - ~~If user is logged in: articles can be created, edited and removed.~~
 - ~~If user is not logged in: user cannot edit newspaper content.~~
 - Change login/logout buttons icons
-- Image edition is not working with server's articles, only with articles created by our app. -- email him
+- ~~Image edition is not working with server's articles, only with articles created by our app. -- email him~~
 
 **Article details**
 - ~~Show title, subtitle, abstract, category, body and picture (if it's included).~~
