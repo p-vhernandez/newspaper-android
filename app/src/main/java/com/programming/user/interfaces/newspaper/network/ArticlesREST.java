@@ -186,7 +186,6 @@ public class ArticlesREST {
             connection.setUseCaches(false);
 
             JSONObject json = a.toJSON();
-            Log.e("ARTICLE JSON", json.toString());
             ServiceCallUtils.writeJSONParams(connection, json);
             int HttpResult = connection.getResponseCode();
 

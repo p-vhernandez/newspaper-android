@@ -286,6 +286,7 @@ public class ArticleDetailsActivity extends AppCompatActivity {
     private void editArticleImage(String imageDescription) {
         try {
             String encodedImage = SerializationUtils.encodeImage(editedImageBitmap);
+            encodedImage = encodedImage.replace("\n", "").replace("\r", "");
             article.addImage(encodedImage, imageDescription);
 
             new Thread(() -> {
