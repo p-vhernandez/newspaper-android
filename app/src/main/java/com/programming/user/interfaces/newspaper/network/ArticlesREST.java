@@ -165,10 +165,10 @@ public class ArticlesREST {
         return result;
     }
 
-    public static int saveArticle(Article a) throws ServerCommunicationError {
+    public static void saveArticle(Article a) throws ServerCommunicationError {
         try {
             String parameters = "";
-            String request = ModelManager.restConnection.serviceURL + ModelManager.ARTICLES_METHOD;
+            String request = ModelManager.restConnection.serviceURL + ModelManager.ARTICLE_METHOD;
             URL url = new URL(request);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
@@ -185,17 +185,19 @@ public class ArticlesREST {
             connection.setRequestProperty("charset", "utf-8");
             connection.setUseCaches(false);
 
-            ServiceCallUtils.writeJSONParams(connection, a.toJSON());
+            JSONObject json = a.toJSON();
+            Log.e("ARTICLE JSON", json.toString());
+            ServiceCallUtils.writeJSONParams(connection, json);
             int HttpResult = connection.getResponseCode();
 
             if (HttpResult == HttpURLConnection.HTTP_OK) {
                 String res = parseHttpStreamResult(connection);
 
                 // get id from status ok when saved
-                int id = ServiceCallUtils.readRestResultFromInsert(res);
-                Logger.log(Logger.INFO, "Object inserted, returned id:" + id);
+//                int id = ServiceCallUtils.readRestResultFromInsert(res);
+//                Logger.log(Logger.INFO, "Object inserted, returned id:" + id);
 
-                return id;
+//                return id;
             } else {
                 throw new ServerCommunicationError(connection.getResponseMessage());
             }
@@ -209,7 +211,7 @@ public class ArticlesREST {
     public static void deleteArticle(int idArticle) throws ServerCommunicationError {
         try {
             String parameters = "";
-            String request = ModelManager.restConnection.serviceURL + ModelManager.ARTICLES_METHOD + "/" + idArticle;
+            String request = ModelManager.restConnection.serviceURL + ModelManager.ARTICLE_METHOD + "/" + idArticle;
             URL url = new URL(request);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 

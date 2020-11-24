@@ -36,6 +36,8 @@ public class ModelManager {
         return restConnection.authType;
     }
 
+    public static boolean isAdministrator() { return restConnection.isAdministrator; }
+
     /**
      * @param ini Initializes entity manager urls and users
      * @throws AuthenticationError

@@ -1,14 +1,21 @@
 package com.programming.user.interfaces.newspaper.details;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.Html;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -18,20 +25,29 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.programming.user.interfaces.newspaper.ArticleListActivity;
 import com.programming.user.interfaces.newspaper.R;
 import com.programming.user.interfaces.newspaper.add.AddArticleActivity;
 import com.programming.user.interfaces.newspaper.model.Article;
+import com.programming.user.interfaces.newspaper.model.Image;
 import com.programming.user.interfaces.newspaper.network.ArticlesREST;
 import com.programming.user.interfaces.newspaper.network.ModelManager;
 import com.programming.user.interfaces.newspaper.network.exceptions.ServerCommunicationError;
 import com.programming.user.interfaces.newspaper.utils.PreferencesManager;
 import com.programming.user.interfaces.newspaper.utils.SerializationUtils;
 
+import java.io.IOException;
+
 public class ArticleDetailsActivity extends AppCompatActivity {
 
     public static final String INTENT_ARTICLE_ID = "4rticl31d";
+
+    public static final int REQUEST_CODE_SELECT_PICTURE = 111;
+    public static final int REQUEST_CORE_TAKE_PICTURE = 112;
+    public static final int REQUEST_CORE_CAMERA_PERMISSION = 113;
 
     private int articleID;
 
@@ -52,6 +68,10 @@ public class ArticleDetailsActivity extends AppCompatActivity {
     private ImageButton btnEdit;
     private ImageButton btnDelete;
 
+    private Bitmap editedImageBitmap;
+
+    private Dialog loadingDialog;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,6 +86,27 @@ public class ArticleDetailsActivity extends AppCompatActivity {
             downloadArticleInfo();
         } else {
             // TODO: show error ? & go back to list
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == REQUEST_CODE_SELECT_PICTURE
+                && resultCode == RESULT_OK) {
+            try {
+                Uri selectedImage = data.getData();
+                editedImageBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
+                askForDescription();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else if (requestCode == REQUEST_CORE_TAKE_PICTURE
+                && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            editedImageBitmap = (Bitmap) extras.get("data");
+            askForDescription();
         }
     }
 
@@ -137,16 +178,12 @@ public class ArticleDetailsActivity extends AppCompatActivity {
     }
 
     private void configureClickListeners() {
-        btnEdit.setOnClickListener(view -> {
-            dialogConfirmEdition();
-        });
-
-        btnDelete.setOnClickListener(view -> {
-            dialogConfirmDeletion();
-        });
+        btnEdit.setOnClickListener(view -> dialogConfirmEdition());
+        btnDelete.setOnClickListener(view -> dialogConfirmDeletion());
     }
 
     private void downloadArticleInfo() {
+        showLoading();
         new Thread(() -> {
             try {
                 article = ArticlesREST.getArticle(articleID);
@@ -182,6 +219,8 @@ public class ArticleDetailsActivity extends AppCompatActivity {
             } else {
                 articleImage.setImageDrawable(getDrawable(R.drawable.ic_news));
             }
+
+            hideLoading();
         } catch (ServerCommunicationError serverCommunicationError) {
             serverCommunicationError.printStackTrace();
         }
@@ -192,16 +231,75 @@ public class ArticleDetailsActivity extends AppCompatActivity {
         builder.setTitle(R.string.edition_warning);
         builder.setMessage(R.string.confirm_edition);
 
-        builder.setPositiveButton(R.string.edit, (dialogInterface, i) -> {
-            // TODO: edit article
-        });
-
-        builder.setNegativeButton(getString(R.string.cancel), (dialogInterface, i) -> {
-
-        });
+        builder.setPositiveButton(getString(R.string.use_existing), (dialogInterface, i) -> getExistingPicture());
+        builder.setNegativeButton(getString(R.string.take_new_one), (dialogInterface, i) -> takeNewPicture());
 
         Dialog dialog = builder.create();
         dialog.show();
+    }
+
+    private void askForDescription() {
+        try {
+            android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
+            final View customDialogView = getLayoutInflater().inflate(R.layout.custom_popup_description, null);
+            builder.setTitle(R.string.change_image_desc);
+            builder.setView(customDialogView);
+            builder.setCancelable(false);
+
+            EditText editDesc = customDialogView.findViewById(R.id.image_description);
+            editDesc.setHint(article.getImage().getDescription());
+
+            builder.setPositiveButton(R.string.change_desc, (dialogInterface, i) -> editArticleImage(editDesc.getText().toString()));
+            builder.setNegativeButton(R.string.use_current, (dialogInterface, i) -> {
+                try {
+                    editArticleImage(article.getImage().getDescription());
+                } catch (ServerCommunicationError serverCommunicationError) {
+                    serverCommunicationError.printStackTrace();
+                }
+            });
+
+            Dialog dialog = builder.create();
+            dialog.show();
+        } catch (ServerCommunicationError e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void getExistingPicture() {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("image/*");
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        startActivityForResult(intent, REQUEST_CODE_SELECT_PICTURE);
+    }
+
+    private void takeNewPicture() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED) {
+            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.CAMERA}, REQUEST_CORE_CAMERA_PERMISSION);
+        }
+
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(intent, REQUEST_CORE_TAKE_PICTURE);
+        }
+    }
+
+    private void editArticleImage(String imageDescription) {
+        try {
+            String encodedImage = SerializationUtils.encodeImage(editedImageBitmap);
+            article.addImage(encodedImage, imageDescription);
+
+            new Thread(() -> {
+                try {
+                    ArticlesREST.saveArticle(article);
+                } catch (ServerCommunicationError serverCommunicationError) {
+                    serverCommunicationError.printStackTrace();
+                }
+
+                backToArticlesList();
+            }).start();
+        } catch (ServerCommunicationError serverCommunicationError) {
+            serverCommunicationError.printStackTrace();
+        }
     }
 
     private void dialogConfirmDeletion() {
@@ -237,5 +335,20 @@ public class ArticleDetailsActivity extends AppCompatActivity {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
         finish();
+    }
+
+    private void showLoading() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View customDialog = getLayoutInflater().inflate(R.layout.custom_popup_progress, null);
+        builder.setView(customDialog);
+
+        loadingDialog = builder.create();
+        loadingDialog.show();
+    }
+
+    private void hideLoading() {
+        if (loadingDialog != null) {
+            loadingDialog.dismiss();
+        }
     }
 }

@@ -13,6 +13,7 @@ import com.programming.user.interfaces.newspaper.network.LoginREST;
 import com.programming.user.interfaces.newspaper.network.ModelManager;
 import com.programming.user.interfaces.newspaper.network.RESTConnection;
 import com.programming.user.interfaces.newspaper.network.exceptions.AuthenticationError;
+import com.programming.user.interfaces.newspaper.utils.PreferencesManager;
 
 import java.util.Properties;
 
@@ -46,6 +47,14 @@ public class SplashActivity extends AppCompatActivity {
         new Handler().postDelayed(() -> {
             try {
                 ModelManager.configureConnection(restProperties);
+
+                if (PreferencesManager.getUserLoggedIn(this)) {
+                    ModelManager.restConnection.setIdUser(PreferencesManager.getUserID(this));
+                    ModelManager.restConnection.setAdministrator(PreferencesManager.getUserAdmin(this));
+                    ModelManager.restConnection.setApikey(PreferencesManager.getUserApiKey(this));
+                    ModelManager.restConnection.setAuthType(PreferencesManager.getUserAuthType(this));
+                }
+
                 goToArticlesList();
             } catch (AuthenticationError authenticationError) {
                 authenticationError.printStackTrace();
