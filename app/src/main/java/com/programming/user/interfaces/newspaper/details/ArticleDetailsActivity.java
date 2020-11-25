@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -85,7 +86,11 @@ public class ArticleDetailsActivity extends AppCompatActivity {
         if (articleID != -1) {
             downloadArticleInfo();
         } else {
-            // TODO: show error ? & go back to list
+            Toast.makeText(this, getString(R.string.cannot_retrieve_article), Toast.LENGTH_LONG).show();
+        }
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
     }
 

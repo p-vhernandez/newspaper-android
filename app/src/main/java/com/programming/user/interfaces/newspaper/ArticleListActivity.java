@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -175,7 +176,7 @@ public class ArticleListActivity extends AppCompatActivity {
                 runOnUiThread(this::configureAdapter);
             } catch (ServerCommunicationError e) {
                 e.printStackTrace();
-                // TODO: show error
+                Toast.makeText(this, getString(R.string.download_articles_error), Toast.LENGTH_LONG).show();
             }
         }).start();
     }

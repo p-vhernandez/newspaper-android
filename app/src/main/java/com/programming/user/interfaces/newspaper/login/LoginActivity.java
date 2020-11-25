@@ -6,6 +6,7 @@ import android.view.Display;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -78,7 +79,7 @@ public class LoginActivity extends AppCompatActivity {
                 runOnUiThread(this::goBackToArticlesList);
             } catch (AuthenticationError authenticationError) {
                 authenticationError.printStackTrace();
-                // TODO: show error
+                Toast.makeText(this, getString(R.string.error_occurred), Toast.LENGTH_LONG).show();
             }
         }).start();
     }

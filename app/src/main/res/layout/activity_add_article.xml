@@ -153,6 +153,17 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/label_category" />
 
+                <ImageView
+                    android:id="@+id/article_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_marginTop="10dp"
+                    android:contentDescription="@string/article_image"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/spinner_category" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </ScrollView>
