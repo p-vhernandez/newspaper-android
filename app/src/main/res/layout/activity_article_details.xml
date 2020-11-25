@@ -30,13 +30,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:fontFamily="@font/worksansm"
+                    android:gravity="center_horizontal"
                     android:text="@string/welcome_back_home_page"
                     android:textColor="@android:color/darker_gray"
                     android:textSize="14sp"
-                    android:gravity="center_horizontal"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="@id/logged_header"/>
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageButton
                     android:id="@+id/button_delete"
@@ -70,7 +70,7 @@
                 android:fontFamily="@font/georgiab"
                 android:textColor="@android:color/black"
                 android:textSize="26sp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/logged_header" />

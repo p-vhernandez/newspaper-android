@@ -62,7 +62,7 @@ public class ArticlesAdapder extends BaseAdapter {
 
         try {
             Article article = allArticles.get(position);
-            ConstraintLayout articleLayout = row.findViewById(R.id.article);
+            ViewGroup articleLayout = row.findViewById(R.id.article);
             TextView articleTitle = row.findViewById(R.id.article_title);
             TextView articleAbstract = row.findViewById(R.id.article_abstract);
             TextView articleCategory = row.findViewById(R.id.article_category);

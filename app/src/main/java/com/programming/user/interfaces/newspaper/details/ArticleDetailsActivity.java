@@ -87,6 +87,10 @@ public class ArticleDetailsActivity extends AppCompatActivity {
         } else {
             // TODO: show error ? & go back to list
         }
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
     }
 
     @Override
