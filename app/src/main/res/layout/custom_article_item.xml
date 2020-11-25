@@ -1,20 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/article"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_margin="20dp"
+    android:background="@android:color/transparent"
     android:orientation="vertical"
-    android:paddingStart="12dp"
-    android:paddingTop="8dp"
-    android:paddingEnd="12dp"
-    android:paddingBottom="8dp">
+    android:padding="12dp">
 
     <ImageView
         android:id="@+id/article_image"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="200dp"
         android:contentDescription="@string/article_image"
         android:scaleType="centerCrop" />
 
@@ -25,7 +23,7 @@
         android:layout_marginTop="8dp"
         android:fontFamily="@font/georgiab"
         android:textColor="@android:color/black"
-        android:textSize="16sp" />
+        android:textSize="18sp" />
 
     <TextView
         android:id="@+id/article_abstract"
@@ -34,16 +32,16 @@
         android:layout_marginTop="6dp"
         android:fontFamily="@font/georgia"
         android:textColor="@android:color/black"
-        android:textSize="12sp" />
+        android:textSize="14sp" />
 
     <TextView
-        android:id="@+id/article_category"
+        android:id="@id/article_category"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
         android:fontFamily="@font/georgia"
         android:textColor="@android:color/black"
-        android:textSize="10sp"
+        android:textSize="12sp"
         tools:ignore="SmallSp" />
 
 </LinearLayout>

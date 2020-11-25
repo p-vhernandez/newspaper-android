@@ -1,22 +1,29 @@
 package com.programming.user.interfaces.newspaper.add;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.programming.user.interfaces.newspaper.ArticleListActivity;
 import com.programming.user.interfaces.newspaper.R;
@@ -24,6 +31,7 @@ import com.programming.user.interfaces.newspaper.model.Article;
 import com.programming.user.interfaces.newspaper.network.ArticlesREST;
 import com.programming.user.interfaces.newspaper.network.ModelManager;
 import com.programming.user.interfaces.newspaper.network.exceptions.ServerCommunicationError;
+import com.programming.user.interfaces.newspaper.utils.PreferencesManager;
 import com.programming.user.interfaces.newspaper.utils.SerializationUtils;
 
 import java.io.IOException;
@@ -45,6 +53,8 @@ public class AddArticleActivity extends AppCompatActivity implements Spinner.OnI
     private String base64Image;
     private String imageDescription;
 
+    private ImageView articleImage;
+
     private Button btnSelectImage;
     private Button btnCreateArticle;
 
@@ -52,7 +62,11 @@ public class AddArticleActivity extends AppCompatActivity implements Spinner.OnI
 
     private Bitmap imageBitmap;
 
+    private TextView tvWelcomeBack;
+
     public static final int REQUEST_CODE_SELECT_PICTURE = 111;
+    public static final int REQUEST_CORE_TAKE_PICTURE = 112;
+    public static final int REQUEST_CORE_CAMERA_PERMISSION = 113;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -71,10 +85,17 @@ public class AddArticleActivity extends AppCompatActivity implements Spinner.OnI
             try {
                 Uri selectedImage = data.getData();
                 imageBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
+                setArticleImage();
                 askForDescription();
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        } else if (requestCode == REQUEST_CORE_TAKE_PICTURE
+                && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            imageBitmap = (Bitmap) extras.get("data");
+            setArticleImage();
+            askForDescription();
         }
     }
 
@@ -86,13 +107,31 @@ public class AddArticleActivity extends AppCompatActivity implements Spinner.OnI
 
         spinnerCategory = findViewById(R.id.spinner_category);
 
+        articleImage = findViewById(R.id.article_image);
+
         btnSelectImage = findViewById(R.id.button_add_image);
         btnCreateArticle = findViewById(R.id.button_create_article);
 
         allCategories = getResources().getStringArray(R.array.categories);
 
+        tvWelcomeBack = findViewById(R.id.welcome_back);
+
+        checkedUserLoggedIn();
         setCategoriesAdapter();
         configureClickListeners();
+    }
+
+    private void checkedUserLoggedIn() {
+        if (ModelManager.getIdUser() != null) {
+            tvWelcomeBack.setVisibility(View.VISIBLE);
+
+            String txtWelcome = getResources().getString(R.string.welcome_back_home_page) + " " +
+                    PreferencesManager.getUserName(this) + "!";
+            tvWelcomeBack.setText(txtWelcome);
+            tvWelcomeBack.setVisibility(View.VISIBLE);
+        } else {
+            tvWelcomeBack.setVisibility(View.GONE);
+        }
     }
 
     private void setCategoriesAdapter() {
@@ -127,7 +166,14 @@ public class AddArticleActivity extends AppCompatActivity implements Spinner.OnI
     }
 
     private void takeNewPicture() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, REQUEST_CORE_CAMERA_PERMISSION);
+        }
 
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(intent, REQUEST_CORE_TAKE_PICTURE);
+        }
     }
 
     private void askForDescription() {
@@ -158,23 +204,28 @@ public class AddArticleActivity extends AppCompatActivity implements Spinner.OnI
     private void saveArticle() {
         getArticleData();
 
-        try {
-            Article newArticle = new Article(category, title, aAbstract, body, subtitle, ModelManager.getIdUser());
-            if (imageBitmap != null) {
-                base64Image = SerializationUtils.encodeImage(imageBitmap);
-                newArticle.addImage(base64Image, imageDescription);
-            }
-
-            new Thread(() -> {
-                try {
-                    ArticlesREST.saveArticle(newArticle);
-                    backToArticlesList();
-                } catch (ServerCommunicationError serverCommunicationError) {
-                    serverCommunicationError.printStackTrace();
+        if (!title.equals("") && !aAbstract.equals("") && !subtitle.equals("")
+                && !body.equals("") && !category.equals("")) {
+            try {
+                Article newArticle = new Article(category, title, aAbstract, body, subtitle, ModelManager.getIdUser());
+                if (imageBitmap != null) {
+                    base64Image = SerializationUtils.encodeImage(imageBitmap);
+                    newArticle.addImage(base64Image, imageDescription);
                 }
-            }).start();
-        } catch (ServerCommunicationError serverCommunicationError) {
-            serverCommunicationError.printStackTrace();
+
+                new Thread(() -> {
+                    try {
+                        ArticlesREST.saveArticle(newArticle);
+                        backToArticlesList();
+                    } catch (ServerCommunicationError serverCommunicationError) {
+                        serverCommunicationError.printStackTrace();
+                    }
+                }).start();
+            } catch (ServerCommunicationError serverCommunicationError) {
+                serverCommunicationError.printStackTrace();
+            }
+        } else {
+            Toast.makeText(this, getString(R.string.data_missing), Toast.LENGTH_LONG).show();
         }
     }
 
@@ -183,6 +234,10 @@ public class AddArticleActivity extends AppCompatActivity implements Spinner.OnI
         subtitle = eSubtitle.getText().toString();
         aAbstract = eAbstract.getText().toString();
         body = eBody.getText().toString();
+    }
+
+    private void setArticleImage() {
+        articleImage.setImageBitmap(imageBitmap);
     }
 
     @Override

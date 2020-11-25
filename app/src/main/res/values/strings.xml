@@ -51,4 +51,9 @@
     <string name="loading_data">Loading data...</string>
     <string name="add_image_desc">Do you want to add an image description?</string>
     <string name="add_image_desc_btn">Add image desc</string>
+    <string name="app_logo">app logo</string>
+    <string name="data_missing">Article data is missing</string>
+    <string name="download_articles_error">Error retrieving the articles</string>
+    <string name="error_occurred">An error occurred, try again later</string>
+    <string name="cannot_retrieve_article">Selected article cannot be retrieved</string>
 </resources>
